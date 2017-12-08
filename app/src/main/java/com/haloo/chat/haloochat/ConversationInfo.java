@@ -5,19 +5,22 @@ public class ConversationInfo {
     private int mRoomID;
     private String mImageUrl;
     private String mName;
+    private String mPreview;
 
-    public ConversationInfo(int sender, String imageUrl, String name) {
+    public ConversationInfo(int sender, String imageUrl, String name, String preview) {
         mSenderID = sender;
         mRoomID = 0; // Not a room, thus roomid is 0
         mImageUrl = imageUrl;
         mName = name;
+        mPreview = preview;
     }
 
-    public ConversationInfo(int sender, int roomID, String imageUrl, String name) {
+    public ConversationInfo(int sender, int roomID, String imageUrl, String name, String preview) {
         mSenderID = sender;
         mRoomID = roomID;
         mImageUrl = imageUrl;
         mName = name;
+        mPreview = preview;
     }
 
     public int getSenderID() {
@@ -34,5 +37,9 @@ public class ConversationInfo {
 
     public String getName() {
         return mName;
+    }
+
+    public String getPreview() {
+        return mPreview;
     }
 }
