@@ -3,13 +3,16 @@ package com.haloo.chat.haloochat;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -103,11 +106,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         }
 
         void bind(HalooMessage message) {
-            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-            cal.setTimeInMillis(message.getTimestamp());
-
+            Date date = new Date(message.getTimestamp());
             messageText.setText(message.getMessage());
-            timeText.setText(DateFormat.format("HH:mm", cal).toString());
+            timeText.setText(new SimpleDateFormat("HH:mm").format(date));
             nameText.setText(message.getUser().getName());
 
             // TODO: set image
