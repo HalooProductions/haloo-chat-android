@@ -1,17 +1,17 @@
 package com.haloo.chat.haloochat;
 
 public class User {
-    private int mId;
+    private long mId;
     private String mName;
     private String mImgUrl;
 
-    public User(int id, String name, String imgUrl) {
+    public User(long id, String name, String imgUrl) {
         mId = id;
         mName = name;
         mImgUrl = imgUrl;
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 

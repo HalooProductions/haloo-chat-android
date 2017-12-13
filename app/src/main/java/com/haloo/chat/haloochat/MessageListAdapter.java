@@ -23,10 +23,12 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private List<HalooMessage> mMessageList;
+    private long mOwnId;
 
-    public MessageListAdapter(Context context, List<HalooMessage> messageList) {
+    public MessageListAdapter(Context context, List<HalooMessage> messageList, long ownId) {
         mContext = context;
         mMessageList = messageList;
+        mOwnId = ownId;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         HalooMessage message = mMessageList.get(position);
 
-        if (message.getUser().getId() == 0) { // TODO: Placeholder for own messages
+        if (message.getUser().getId() == mOwnId) {
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
             return VIEW_TYPE_MESSAGE_RECEIVED;

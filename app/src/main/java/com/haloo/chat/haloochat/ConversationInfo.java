@@ -2,7 +2,6 @@ package com.haloo.chat.haloochat;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +50,7 @@ public class ConversationInfo implements Parcelable {
         mPreview = in.readString();
     }
 
-    public ConversationInfo(int sender, String imageUrl, String name, String preview) {
+    public ConversationInfo(long sender, String imageUrl, String name, String preview) {
         mSenderID = sender;
         mRoomID = 0; // Not a room, thus roomid is 0
         mImageUrl = imageUrl;
@@ -59,7 +58,7 @@ public class ConversationInfo implements Parcelable {
         mPreview = preview;
     }
 
-    public ConversationInfo(int sender, int roomID, String imageUrl, String name, String preview) {
+    public ConversationInfo(long sender, int roomID, String imageUrl, String name, String preview) {
         mSenderID = sender;
         mRoomID = roomID;
         mImageUrl = imageUrl;
@@ -88,11 +87,11 @@ public class ConversationInfo implements Parcelable {
     }
 
     private ConversationInfo readConversationJson(JSONObject obj) throws JSONException {
-        mSenderID = obj.has("ID") ? obj.getLong("ID") : 0;
+        mSenderID = obj.has("ID") ? Long.parseLong(obj.getString("ID")) : 0;
         mName = obj.getString("Name");
         mPreview = "...";
         mImageUrl = obj.getString("Picture");
-        mRoomID = obj.has("Room_ID") ? obj.getLong("Room_ID") : 0;
+        mRoomID = obj.has("Room_ID") ? Long.parseLong(obj.getString("Room_ID")) : 0;
         return this;
     }
 

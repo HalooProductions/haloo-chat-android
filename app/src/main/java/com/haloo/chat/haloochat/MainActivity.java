@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static ConversationsArrayAdapter conversationsAdapter;
+    private long userId;
     ArrayList<ConversationInfo> conversationList;
     ListView conversationsListView;
     FloatingActionButton fab;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.new_message_btn);
 
+        //userId = 304865346313289729L;
+        userId = 304865346322956289L;
+
         conversationsListView = findViewById(R.id.conversationsListView);
         conversationList = new ArrayList<>();
 
@@ -45,45 +49,37 @@ public class MainActivity extends AppCompatActivity {
 
         getConversationList();
 
-        conversationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+        conversationsListView.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            ConversationInfo conversationInfo = conversationsAdapter.getItem(i);
 
-                ConversationInfo conversationInfo = conversationsAdapter.getItem(i);
-
-                openMessageActivity(conversationInfo);
-            }
+            openMessageActivity(conversationInfo);
         });
     }
 
     private void getConversationList() {
-        String url = "http://192.168.1.101:8000/conversations?user_id=304556471322083329";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if (response.has("rooms")) {
-                        ArrayList<ConversationInfo> roomConversations = ConversationInfo.deserializeJson(response.getJSONArray("rooms"));
-                        conversationList.addAll(roomConversations);
-                        conversationsAdapter.notifyDataSetChanged();
-                    }
-
-                    if (response.has("conversations")) {
-                        ArrayList<ConversationInfo> userConversations = ConversationInfo.deserializeJson(response.getJSONArray("conversations"));
-                        conversationList.addAll(userConversations);
-                        conversationsAdapter.notifyDataSetChanged();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        String url = "http://192.168.0.197:8000/conversations?user_id=" + Long.toString(userId);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            try {
+                if (response.has("rooms")) {
+                    ArrayList<ConversationInfo> roomConversations = ConversationInfo.deserializeJson(response.getJSONArray("rooms"));
+                    conversationList.addAll(roomConversations);
+                    conversationsAdapter.notifyDataSetChanged();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("jsonerror", "Error: " + error.getMessage());
+
+            try {
+                if (response.has("conversations")) {
+                    ArrayList<ConversationInfo> userConversations = ConversationInfo.deserializeJson(response.getJSONArray("conversations"));
+                    conversationList.addAll(userConversations);
+                    conversationsAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+        }, error -> Log.d("jsonerror", "Error: " + error.getMessage()));
 
         queue = ConversationQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         queue.add(request);
@@ -92,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private void openMessageActivity(ConversationInfo info) {
         Intent intent = new Intent(this, MessageListActivity.class);
         intent.putExtra("info", info);
+        intent.putExtra("userId", userId);
         startActivityForResult(intent, 100);
     }
 }
