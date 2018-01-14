@@ -31,7 +31,7 @@ public class MessageListActivity extends AppCompatActivity implements WebSocketC
     private EditText messageInput;
     RequestQueue queue;
 
-    private final String SERVER_URL = "ws://192.168.0.197:8000/ws";
+    private final String SERVER_URL = "ws://178.62.52.11:8000/ws";
     private WebSocketConnection mWebSocketConnection;
 
     @Override
@@ -133,7 +133,7 @@ public class MessageListActivity extends AppCompatActivity implements WebSocketC
 
     private void getUserMessages(long id) {
         Log.i("receiver_id", Long.toString(id));
-        String url = "http://192.168.0.197:8000/chatlog?user_id=" + Long.toString(ownId) + "&receiver_id=" + id;
+        String url = "http://178.62.52.11:8000/chatlog?user_id=" + Long.toString(ownId) + "&receiver_id=" + id;
         JsonArrayRequest request = new JsonArrayRequest(url, response -> {
             try {
                 ArrayList<HalooMessage> list = HalooMessage.deserializeJson(response);
@@ -149,7 +149,7 @@ public class MessageListActivity extends AppCompatActivity implements WebSocketC
     }
 
     private void getRoomMessages(long id) {
-        String url = "http://192.168.0.197:8000/chatlog?room_id=" + id;
+        String url = "http://178.62.52.11:8000/chatlog?room_id=" + id;
         JsonArrayRequest request = new JsonArrayRequest(url, response -> {
             try {
                 ArrayList<HalooMessage> list = HalooMessage.deserializeJson(response);

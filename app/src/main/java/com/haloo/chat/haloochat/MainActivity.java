@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.new_message_btn);
 
         //userId = 304865346313289729L;
-        userId = 304865346322956289L;
+        userId = 305021048628150273L;
 
         conversationsListView = findViewById(R.id.conversationsListView);
         conversationList = new ArrayList<>();
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getConversationList() {
-        String url = "http://192.168.0.197:8000/conversations?user_id=" + Long.toString(userId);
+        String url = "http://178.62.52.11:8000/conversations?user_id=" + Long.toString(userId);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
                 if (response.has("rooms")) {
